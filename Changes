@@ -1,4 +1,8 @@
 Change log for Chart::Gnuplot::Pie
 
+0.02
+    - Print the side of the 3D pie before printing the top surface
+    - Fix label printing due to upgrading of Chart::Gnuplot
+
 0.01
     Initial release

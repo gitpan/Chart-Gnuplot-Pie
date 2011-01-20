@@ -3,7 +3,7 @@ use strict;
 use vars qw($VERSION);
 use base 'Chart::Gnuplot';
 use Carp;
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 
 sub new
@@ -62,37 +62,49 @@ sub plot3d
             $sum += $$pt[$i][1];
         }
 
-        # Draw boundary around slice
+        # Print label and draw side sureface
         my $s = my $start = $rotate/360;
+        my (@r, @g, @b) = ();
         for (my $i = 0; $i < @$pt; $i++)
         {
-            # Initial color
-            my $r = rand();
-            my $g = rand();
-            my $b = rand();
-
-            # Draw side surface
             my $e = $$pt[$i][1]/$sum + $s;
-            print CHT "set palette model RGB functions ".
-                "$r*0.8, $g*0.8, $b*0.8\n";
-            print CHT "splot cos(2*pi*(($e-$s)*u+$s)), ".
-                "sin(2*pi*(($e-$s)*u+$s)), v*0.1 with pm3d\n";
-
-            # Draw top surface
-            print CHT "set palette model RGB functions $r, $g, $b\n";
-            print CHT "splot cos(2*pi*(($e-$s)*u+$s))*v, ".
-                "sin(2*pi*(($e-$s)*u+$s))*v, 0.1 with pm3d\n";
 
             # Print label
             my $pos = "cos(($s+$e)*pi)*1.1, sin(($s+$e)*pi)*1.1";
-            $pos .= ", 0" if ($s+$e > 1 && $s+$e < 2);
-            $pos .= ", 0.1" if ($s+$e < 1 || $s+$e > 2);
+            $pos .= ", -0.1" if ($s+$e > 1 && $s+$e < 2);
+            $pos .= ", 0.2" if ($s+$e < 1 || $s+$e > 2);
             $pos .= " right" if ($s+$e > 0.5 && $s+$e < 1.5);
             $pos .= " front";
             $self->label(
                 text     => $$pt[$i][0],
                 position => $pos,
             );
+            print CHT "set label ${$self->{_labels}}[-1]\n";
+
+            # Initialize color
+            push(@r, rand());
+            push(@g, rand());
+            push(@b, rand());
+
+            # Draw side surface
+            print CHT "set palette model RGB functions ".
+                "$r[$i]*0.8, $g[$i]*0.8, $b[$i]*0.8\n";
+            print CHT "splot cos(2*pi*(($e-$s)*u+$s)), ".
+                "sin(2*pi*(($e-$s)*u+$s)), v*0.1 with pm3d\n";
+            $s = $e;
+        }
+
+        # Draw top surface
+        $s = $start;
+        for (my $i = 0; $i < @$pt; $i++)
+        {
+            my $e = $$pt[$i][1]/$sum + $s;
+
+            # Draw top surface
+            print CHT "set palette model RGB functions ".
+                "$r[$i], $g[$i], $b[$i]\n";
+            print CHT "splot cos(2*pi*(($e-$s)*u+$s))*v, ".
+                "sin(2*pi*(($e-$s)*u+$s))*v, 0.1 with pm3d\n";
             $s = $e;
         }
     }
@@ -119,6 +131,9 @@ sub _thaw
     my $string = '';
     my $rotate = (defined $self->{rotate})? $self->{rotate} : 0;
 
+    open(CHT, ">>$chart->{_script}") ||
+        confess("Can't write $chart->{_script}");
+
     if (ref $self->{data} eq 'ARRAY')
     {
         my $pt = $self->{data};
@@ -144,6 +159,8 @@ sub _thaw
                 text     => $$pt[$i][0],
                 position => $pos,
             );
+            print CHT "set label ${$chart->{_labels}}[-1]\n";
+
             $s = $e;
         }
 
@@ -163,6 +180,7 @@ sub _thaw
         }
     }
 
+    close(CHT);
     return($string);
 }
 
@@ -207,19 +225,18 @@ Chart::Gnuplot::Pie - Plot pie chart using Gnuplot on the fly
 
 =head1 DESCRIPTION
 
-This module provides an interface for plotting pie charts using Gnuplot.
-Gnuplot does not have built-in command for pie chart. This module draws the pie
-charts using the parametric function plotting feature of Gnuplot, an idea from
-Gnuplotter. 
+This module provides an interface for plotting pie charts using Gnuplot, which
+does not have built-in command for pie chart. This module requires Gnuplot and
+C<Chart::Gnuplot>.
 
 C<Chart::Gnuplot::Pie> is a child class of C<Chart::Gnuplot>. As a result, what
 you may do on a C<Chart::Gnuplot> object basically works on a
 C<Chart::Gnuplot::Pie> object too, with a few exceptions. Similarly,
 C<Chart::Gnuplot::Pie::DataSet> is a child class of C<Chart::Gnuplot::DataSet>.
 
-It should be noted that this module is preliminary. Not many pie charting
-options are provided in the current version. Besides, backward compatibility
-may not be guaranteed in later versions.
+IMPORTANT: This module is a preliminary version. Not many pie charting options
+are provided currently. Besides, backward compatibility may not be guaranteed
+in later versions.
 
 =head1 REQUIREMENT
 
@@ -241,7 +258,7 @@ Ka-Wai Mak <kwmak@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009 Ka-Wai Mak. All rights reserved.
+Copyright (c) 2009, 2011 Ka-Wai Mak. All rights reserved.
 
 =head1 LICENSE
 
