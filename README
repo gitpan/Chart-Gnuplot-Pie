@@ -11,10 +11,10 @@ make install
 
 Prerequisites
 =============
-Chart::Gnuplot v0.09 or later
+Chart::Gnuplot v0.14 or later
 
 Copyright
 =========
-Copyright (c) 2009 Ka-Wai Mak. All rights reserved.
+Copyright (c) 2009, 2011 Ka-Wai Mak. All rights reserved.
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

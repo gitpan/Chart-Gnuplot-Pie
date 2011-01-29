@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Chart-Gnuplot-Pie
-version:            0.02
+version:            0.03
 abstract:           Plot pie chart using Gnuplot on the fly
 author:
     - Ka-Wai Mak
@@ -11,7 +11,7 @@ configure_requires:
 build_requires:
     ExtUtils::MakeMaker:  0
 requires:
-    Chart::Gnuplot:  0.09
+    Chart::Gnuplot:  0.14
 no_index:
     directory:
         - t

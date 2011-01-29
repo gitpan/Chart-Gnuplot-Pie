@@ -5,7 +5,7 @@ WriteMakefile(
 	NAME          => 'Chart::Gnuplot::Pie',
 	VERSION_FROM  => 'lib/Chart/Gnuplot/Pie.pm',
 	ABSTRACT_FROM => "lib/Chart/Gnuplot/Pie.pm",
-	PREREQ_PM     => { Chart::Gnuplot => 0.09 },
+	PREREQ_PM     => { Chart::Gnuplot => 0.14 },
 	dist          => {
 		SUFFIX   => '.gz',
 		COMPRESS => 'gzip -f'

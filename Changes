@@ -1,8 +1,14 @@
 Change log for Chart::Gnuplot::Pie
 
+0.03
+    - NEW Support customizing color for each slice
+    - NEW Support customizing width and color of the border around and inside
+          the 2D pie
+
 0.02
-    - Print the side of the 3D pie before printing the top surface
-    - Fix label printing due to upgrading of Chart::Gnuplot
+    - NEW Support rotating 3D pie
+    - FIX Draw the side surface of the 3D pie before drawing the top surface
+    - FIX Label printing due to upgrading of Chart::Gnuplot
 
 0.01
     Initial release
