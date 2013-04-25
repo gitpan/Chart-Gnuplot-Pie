@@ -1,5 +1,10 @@
 Change log for Chart::Gnuplot::Pie
 
+0.04
+    - NEW better test cases
+    - CHG improve POD
+    - FIX due to upgrading of Chart::Gnuplot
+
 0.03
     - NEW Support customizing color for each slice
     - NEW Support customizing width and color of the border around and inside

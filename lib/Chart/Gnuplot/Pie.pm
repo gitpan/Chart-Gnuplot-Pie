@@ -3,7 +3,7 @@ use strict;
 use vars qw($VERSION);
 use base 'Chart::Gnuplot';
 use Carp;
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 
 sub new
@@ -46,7 +46,7 @@ sub plot2d
     print CHT "unset multiplot\n";
     close(CHT);
 
-    $self->SUPER::_execute();
+    $self->SUPER::execute();
     return($self);
 }
 
@@ -67,7 +67,7 @@ sub plot3d
     print CHT "unset multiplot\n";
     close(CHT);
 
-    $self->SUPER::_execute();
+    $self->SUPER::execute();
     return($self);
 }
 
@@ -111,7 +111,7 @@ sub _thaw2d
             text     => $$pt[$i][0],
             position => $pos,
         );
-        $string .= "set label ${$chart->{_labels}}[-1]\n";
+        $string .= "set label${$chart->{_labels}}[-1]\n";
         $s = $e;
     }
 
@@ -204,7 +204,7 @@ sub _thaw3d
             text     => $$pt[$i][0],
             position => $pos,
         );
-        $string .= "set label ${$chart->{_labels}}[-1]\n";
+        $string .= "set label${$chart->{_labels}}[-1]\n";
 
         # Set colors of the slices
         # - Initialize random color if not specified
@@ -465,11 +465,7 @@ Supported proerties are:
     
     $c->plot2d($d);
 
-=begin html
-
-<img src="http://sourceforge.net/apps/gallery/chartgnuplotpie/main.php?g2_view=core.DownloadItem&g2_itemId=17&g2_serialNumber=4">
-
-=end html
+=for HTML <p><img src="http://sourceforge.net/apps/gallery/chartgnuplotpie/main.php?g2_view=core.DownloadItem&g2_itemId=17&g2_serialNumber=4"/></p>
 
 =item 2. A simple 3D pie chart
 
@@ -490,11 +486,7 @@ Supported proerties are:
     
     $c->plot3d($d);
 
-=begin html
-
-<img src="http://sourceforge.net/apps/gallery/chartgnuplotpie/main.php?g2_view=core.DownloadItem&g2_itemId=21&g2_serialNumber=4">
-
-=end html
+=for HTML <p><img src="http://sourceforge.net/apps/gallery/chartgnuplotpie/main.php?g2_view=core.DownloadItem&g2_itemId=29&g2_serialNumber=4"/></p>
 
 =back
 
@@ -518,7 +510,7 @@ Ka-Wai Mak <kwmak@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2009, 2011 Ka-Wai Mak. All rights reserved.
+Copyright (c) 2009, 2011, 2013 Ka-Wai Mak. All rights reserved.
 
 =head1 LICENSE
 
